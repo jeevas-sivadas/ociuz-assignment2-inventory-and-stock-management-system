@@ -5,6 +5,7 @@ import User from "../models/User.js";
 import "dotenv/config";
 
 async function createAdmin() {
+
     try {
         await connectDB();
         const existingAdmin = await User.findOne({
@@ -26,17 +27,21 @@ async function createAdmin() {
         }
 
         const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
+
         await User.create({
             name: ADMIN_NAME,
             email: ADMIN_EMAIL,
             password: hashedPassword,
             role: "admin"
         });
+
         console.log("Admin created successfully");
     }
+
     catch (error) {
         console.error("Error creating Admin:", error);
     }
+
     finally {
         await mongoose.connection.close();
     }
